@@ -36,9 +36,9 @@ battle.on('start', function (data) {
 });
 var show = function mostrarPers (interfazHTML,nombrePers,lista)
     {
-    	var i = 0;
-    	var nodo;
-    	var personaje;   	
+        var i = 0;
+        var nodo;
+        var personaje;
         for (var character in lista)
         {
             nodo = interfazHTML.querySelector('[class=character-list]');
@@ -59,13 +59,13 @@ battle.on('turn', function (data) {
     var nomHeroes = Object.keys(Hlista);
     var HeroesTML = document.getElementById('heroes');
     var Mlista = this.characters.allFrom("monsters");
-	var nomMonstruos = Object.keys(Mlista);
-	var HTMonstersL  = document.getElementById('monsters');
+    var nomMonstruos = Object.keys(Mlista);
+    var HTMonstersL  = document.getElementById('monsters');
 
     show(HeroesTML,nomHeroes,Hlista);
     show(HTMonstersL,nomMonstruos,Mlista);
     // TODO: highlight current character
-	var personajeActual = document.querySelector('[data-chara-id= '+ data.activeCharacterId +']');
+    var personajeActual = document.querySelector('[data-chara-id= '+ data.activeCharacterId +']');//es posible que se haga con queryselectorall
     personajeActual.classList.add('active');
     // TODO: show battle actions form
     var opcionAct = actionForm.querySelector('[class=choices]');
@@ -103,9 +103,24 @@ window.onload = function () {
     actionForm.addEventListener('submit', function (evt) {
         evt.preventDefault();
 
+        var self = this;
+
         // TODO: select the action chosen by the player
+        self.accion = actionForm.elements['option'].value;
+        battle.options.select(self.action);
+
         // TODO: hide this menu
+        actionForm.style.display = 'none';
+
         // TODO: go to either select target menu, or to the select spell menu
+        if(self.action === 'attack'){
+            var objetivo = targetForm.querySelector('.choices');
+            targetForm.style.display = 'block';
+        }
+        else if(self.action ==='cast'){
+            spellForm.style.display = 'block';
+
+        }
     });
 
     targetForm.addEventListener('submit', function (evt) {
