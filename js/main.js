@@ -54,6 +54,7 @@ var show = function mostrarPers (interfazHTML,nombrePers,lista)
 
 battle.on('turn', function (data) {
     console.log('TURN', data);
+    // TODO: render the characters
     var Hlista = this.characters.allFrom("heroes");
     var nomHeroes = Object.keys(Hlista);
     var HeroesTML = document.getElementById('heroes');
@@ -63,10 +64,21 @@ battle.on('turn', function (data) {
 
     show(HeroesTML,nomHeroes,Hlista);
     show(HTMonstersL,nomMonstruos,Mlista);
-
-    // TODO: render the characters
     // TODO: highlight current character
+	var personajeActual = document.querySelector('[data-chara-id= '+ data.activeCharacterId +']');
+    personajeActual.classList.add('active');
     // TODO: show battle actions form
+    var opcionAct = actionForm.querySelector('[class=choices]');
+    var listaOpciones = this.options.list();
+
+    listaOpciones.forEach(function(accion){
+        var li = document.createElement('li');
+        li.innerHTML = '<label><input type="radio" name="option" value=' + accion + '> <strong>' + accion + '</strong></label>'
+        opcionAct.appendChild(li);
+    });
+
+    actionForm.style.display = 'inline';
+
 });
 
 battle.on('info', function (data) {
