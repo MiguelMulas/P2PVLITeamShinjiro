@@ -106,18 +106,18 @@ window.onload = function () {
         var self = this;
 
         // TODO: select the action chosen by the player
-        self.accion = actionForm.elements['option'].value;
-        battle.options.select(self.action);
+        var accion = actionForm.elements['option'].value;
+        battle.options.select(self.accion);
 
         // TODO: hide this menu
         actionForm.style.display = 'none';
 
         // TODO: go to either select target menu, or to the select spell menu
-        if(self.action === 'attack'){
-            var objetivo = targetForm.querySelector('.choices');
+        if(self.accion === 'attack'){
+            //var objetivo = targetForm.querySelector('.choices');
             targetForm.style.display = 'block';
         }
-        else if(self.action ==='cast'){
+        else if(self.accion ==='cast'){
             spellForm.style.display = 'block';
 
         }
@@ -126,7 +126,10 @@ window.onload = function () {
     targetForm.addEventListener('submit', function (evt) {
         evt.preventDefault();
         // TODO: select the target chosen by the player
+        var objetivo = targetForm.elements['option'].value;
+        battle.options.select(objetivo);
         // TODO: hide this menu
+        actionForm.style.display = 'none';
     });
 
     targetForm.querySelector('.cancel')
