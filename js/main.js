@@ -51,13 +51,8 @@ var show = function mostrarPers (interfazHTML,nombrePers,lista)
             nodo.appendChild(li);
             ++i;
         }
-    }
-function createPanel(nodo, opciones){
-    nodo.innerHTML = "";
-    for (var i = 0; i < opciones.length ; i++) {
-        nodo.innerHTML += `<li><label><input type = "radio" name="option" value = "${opciones[i]}" required> ${opciones[i]}</label></li>`;
     };
-};
+
 battle.on('turn', function (data) {
     console.log('TURN', data);
     // TODO: render the characters
@@ -84,7 +79,7 @@ battle.on('turn', function (data) {
         opcionAct.appendChild(li);
     });
 
-    actionForm.style.display = 'inline';
+    actionForm.style.display = 'block';
 
     var personajess = this._charactersById;
     var objetivo = targetForm.querySelector('[class=choices]');
@@ -94,10 +89,7 @@ battle.on('turn', function (data) {
         if (personajess[i]._hp > 0){
             var li = document.createElement('li');
 
-            if (personajess[i].party === "heroes"){
-                li.innerHTML += '<heroe><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></heroe>';
-            }
-            else li.innerHTML += '<monst><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></monst>';
+            li.innerHTML += '<label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label>';
 
             objetivo.appendChild(li);
         }
@@ -112,12 +104,45 @@ battle.on('turn', function (data) {
         li.innerHTML += '<label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label>';
         objetivoHechizo.appendChild(li);
     }
+    if (objetivoHechizo.innerHTML === "") spellForm.querySelector('[type=submit]').disabled = true;
+    else spellForm.querySelector('[type=submit]').disabled = false;
 });
 
 battle.on('info', function (data) {
     console.log('INFO', data);
 
     // TODO: display turn info in the #battle-info panel
+    infoPanel.innerHTML = '<strong>' + data.activeCharacterId + '</strong>';
+    if (data.action === 'attack') {
+        infoPanel.innerHTML += ' le ha dado una colleja a <strong>' + data.targetId + '</strong> ';
+        if (data.success) {
+            var effectsTxt = prettifyEffect(data.effect || {});
+            infoPanel.innerHTML += ' y causó ' + effectsTxt;
+        }
+        else {
+            infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente y <strong>' + data.targetId + '</strong> se rió de él!';
+        }
+    }
+    else if (data.action === 'cast') {
+        infoPanel.innerHTML += ' se sacó la varita, usó <i>' + data.scrollName + '</i>';
+        if (data.success) {
+            var effectsTxt = prettifyEffect(data.effect || {});
+            infoPanel.innerHTML += ' y causó ' + effectsTxt;
+        }
+        else {
+            infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente y <strong>' + data.targetId + '</strong> se rió de él!';
+        }
+    }
+    else
+    {
+        infoPanel.innerHTML += ' se defendió';
+        if (data.success) {
+            infoPanel.innerHTML += '. ¡Su defensa aumenta!';
+        }
+        else {
+            infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente!';
+        }
+    }
 });
 
 battle.on('end', function (data) {
@@ -165,8 +190,11 @@ window.onload = function () {
     .addEventListener('click', function (evt) {
         evt.preventDefault();
         // TODO: cancel current battle options
+        battle.options.cancel();
         // TODO: hide this form
+        targetForm.style.display = 'none';
         // TODO: go to select action menu
+        actionForm.style.display = 'block';
     });
 
     spellForm.addEventListener('submit', function (evt) {
@@ -184,8 +212,11 @@ window.onload = function () {
     .addEventListener('click', function (evt) {
         evt.preventDefault();
         // TODO: cancel current battle options
+        battle.options.cancel();
         // TODO: hide this form
+        spellForm.style.display = 'none';
         // TODO: go to select action menu
+        actionForm.style.display = 'block';
     });
 
     battle.start();
