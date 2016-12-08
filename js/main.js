@@ -166,7 +166,8 @@ battle.on('end', function (data) {
     show(HeroesTML,nomHeroes,Hlista);
     show(HTMonstersL,nomMonstruos,Mlista);
 
-    infoPanel.innerHTML = 'La sangrienta y larga batalla por fin ha terminado los <strong>' + data.winner + '</strong> se van a tomar magdalenas para celebrar la victoria';
+    infoPanel.innerHTML = 'La sangrienta y larga batalla por fin ha terminado los <strong>' + data.winner +
+     '</strong> se van a tomar magdalenas para celebrar la victoria.' + '<form name="reset"><p><button type="submit">Volver a jugar</button></p>';
 
     // TODO: re-render the parties so the death of the last character gets reflected
     // TODO: display 'end of battle' message, showing who won
