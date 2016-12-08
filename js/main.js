@@ -68,9 +68,9 @@ battle.on('turn', function (data) {
     show(HTMonstersL,nomMonstruos,Mlista);
 
     // TODO: highlight current character
-    //var pelotudo = data.activeCharacterId;
-    var personajeActual = document.querySelector('[data-chara-id= '+ data.activeCharacterId +']');//es posible que se haga con queryselectorall
-    personajeActual.classList.add('active');
+    var personajeActivo = data.activeCharacterId;
+    var personajeAmarillo = document.querySelector ('[data-chara-id= "' + personajeActivo + '" ]');
+    personajeAmarillo.classList.add ('active');
     // TODO: show battle actions form
 
     actionForm.style.display = 'block';
