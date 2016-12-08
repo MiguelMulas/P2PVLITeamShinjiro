@@ -9,31 +9,57 @@ function prettifyEffect(obj) {
     }).join(', ');
 }
 
+function JuegoAleatorio(party){
+    var numCombatientes = Math.floor(Math.random() * 4) + 1;
+    var combatientes = [];
+    if (party === 'heroes'){
+        for(var i = 0; i < numCombatientes; ++i){
+            var rdm1 = Math.floor(Math.random() * 2) + 1;
+            if(rdm1 === 1) combatientes[i] = RPG.entities.characters.heroTank;
+            else combatientes[i] = RPG.entities.characters.heroWizard;
+        }
+
+    }
+    else {
+        for(var i = 0; i < numCombatientes; ++i){
+            var rdm2 = Math.floor(Math.random() * 3) + 1;
+            if(rdm2 === 1) combatientes[i] = RPG.entities.characters.monsterBat;
+            else if (rdm2 === 2) combatientes[i] = RPG.entities.characters.monsterSkeleton;
+            else combatientes[i] = RPG.entities.characters.monsterSlime;
+        }
+    }
+    return combatientes;
+}
 
 battle.setup({
     heroes: {
-        members: [
-            RPG.entities.characters.heroTank,
+        members: JuegoAleatorio('heroes'),
+        /*members: [
+            /*RPG.entities.characters.heroTank,
             RPG.entities.characters.heroWizard
-        ],
+            members
+        ],*/
         grimoire: [
             RPG.entities.scrolls.health,
             RPG.entities.scrolls.fireball
         ]
     },
     monsters: {
-        members: [
+        members: JuegoAleatorio('monsters')
+        /*members: [
             RPG.entities.characters.monsterSlime,
             RPG.entities.characters.monsterBat,
             RPG.entities.characters.monsterSkeleton,
             RPG.entities.characters.monsterBat
-        ]
+        ]*/
     }
 });
 
 battle.on('start', function (data) {
     console.log('START', data);
 });
+
+
 var show = function mostrarPers (interfazHTML,nombrePers,lista)
     {
         var i = 0;
