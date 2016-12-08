@@ -51,7 +51,12 @@ var show = function mostrarPers (interfazHTML,nombrePers,lista)
             ++i;
         }
     }
-
+function createPanel(nodo, opciones){
+    nodo.innerHTML = "";
+    for (var i = 0; i < opciones.length ; i++) {
+        nodo.innerHTML += `<li><label><input type = "radio" name="option" value = "${opciones[i]}" required> ${opciones[i]}</label></li>`;
+    };
+};
 battle.on('turn', function (data) {
     console.log('TURN', data);
     // TODO: render the characters
@@ -78,6 +83,23 @@ battle.on('turn', function (data) {
     });
 
     actionForm.style.display = 'inline';
+
+    var personajess = this._charactersById;
+    var objetivo = targetForm.querySelector('[class=choices]');
+    objetivo.innerHTML = "";
+
+    for (var i in personajess){
+        if (personajess[i]._hp > 0){
+            var li = document.createElement('li');
+
+            if (personajess[i].party === "heroes"){
+                li.innerHTML += '<heroe><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></heroe>';
+            }
+            else li.innerHTML += '<monst><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></monst>';
+
+            objetivo.appendChild(li);
+        }
+    }
 
 });
 
@@ -113,13 +135,11 @@ window.onload = function () {
         actionForm.style.display = 'none';
 
         // TODO: go to either select target menu, or to the select spell menu
-        if(self.accion === 'attack'){
-            //var objetivo = targetForm.querySelector('.choices');
+        if(accion === 'attack'){
             targetForm.style.display = 'block';
         }
-        else if(self.accion ==='cast'){
+        else if(accion ==='cast'){
             spellForm.style.display = 'block';
-
         }
     });
 
