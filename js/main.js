@@ -66,21 +66,24 @@ battle.on('turn', function (data) {
 
     show(HeroesTML,nomHeroes,Hlista);
     show(HTMonstersL,nomMonstruos,Mlista);
+
     // TODO: highlight current character
+    //var pelotudo = data.activeCharacterId;
     var personajeActual = document.querySelector('[data-chara-id= '+ data.activeCharacterId +']');//es posible que se haga con queryselectorall
     personajeActual.classList.add('active');
     // TODO: show battle actions form
+
+    actionForm.style.display = 'block';
+
     var opcionAct = actionForm.querySelector('[class=choices]');
     var listaOpciones = this.options.list();
     opcionAct.innerHTML = "";
 
     listaOpciones.forEach(function(accion){
         var li = document.createElement('li');
-        li.innerHTML = '<label><input type="radio" name="option" value=' + accion + '> <strong>' + accion + '</strong></label>'
+        li.innerHTML = '<label><input type="radio" name="option" value="' + accion +  '" required> ' + accion + '</label>';
         opcionAct.appendChild(li);
     });
-
-    actionForm.style.display = 'block';
 
     var personajess = this._charactersById;
     var objetivo = targetForm.querySelector('[class=choices]');
