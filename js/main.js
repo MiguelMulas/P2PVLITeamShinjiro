@@ -39,9 +39,10 @@ var show = function mostrarPers (interfazHTML,nombrePers,lista)
         var i = 0;
         var nodo;
         var personaje;
+        nodo = interfazHTML.querySelector('[class=character-list]');
+        nodo.innerHTML = "";
         for (var character in lista)
         {
-            nodo = interfazHTML.querySelector('[class=character-list]');
             var li = document.createElement('li');
             personaje = lista[character];
             li.innerHTML += personaje.name + " (HP:" + '<strong>' +  personaje.hp + '</strong>' + "/" + 
@@ -75,6 +76,7 @@ battle.on('turn', function (data) {
     // TODO: show battle actions form
     var opcionAct = actionForm.querySelector('[class=choices]');
     var listaOpciones = this.options.list();
+    opcionAct.innerHTML = "";
 
     listaOpciones.forEach(function(accion){
         var li = document.createElement('li');
@@ -101,6 +103,15 @@ battle.on('turn', function (data) {
         }
     }
 
+    var hechizos = this._grimoires[this._activeCharacter.party];
+    var objetivoHechizo = spellForm.querySelector('[class=choices]');
+    objetivoHechizo.innerHTML = "";
+    
+    for (var i in hechizos){
+        var li = document.createElement('li');
+        li.innerHTML += '<label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label>';
+        objetivoHechizo.appendChild(li);
+    }
 });
 
 battle.on('info', function (data) {
@@ -125,11 +136,9 @@ window.onload = function () {
     actionForm.addEventListener('submit', function (evt) {
         evt.preventDefault();
 
-        var self = this;
-
         // TODO: select the action chosen by the player
         var accion = actionForm.elements['option'].value;
-        battle.options.select(self.accion);
+        battle.options.select(accion);
 
         // TODO: hide this menu
         actionForm.style.display = 'none';
@@ -149,7 +158,7 @@ window.onload = function () {
         var objetivo = targetForm.elements['option'].value;
         battle.options.select(objetivo);
         // TODO: hide this menu
-        actionForm.style.display = 'none';
+        targetForm.style.display = 'none';
     });
 
     targetForm.querySelector('.cancel')
@@ -163,8 +172,12 @@ window.onload = function () {
     spellForm.addEventListener('submit', function (evt) {
         evt.preventDefault();
         // TODO: select the spell chosen by the player
+        var hechizo = spellForm.elements['option'].value;
+        battle.options.select(hechizo);
         // TODO: hide this menu
+        spellForm.style.display = 'none';
         // TODO: go to select target menu
+        targetForm.style.display = 'block';
     });
 
     spellForm.querySelector('.cancel')
