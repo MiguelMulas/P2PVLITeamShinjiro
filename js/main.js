@@ -93,8 +93,10 @@ battle.on('turn', function (data) {
         if (personajess[i]._hp > 0){
             var li = document.createElement('li');
 
-            li.innerHTML += '<label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label>';
-
+            if (personajess[i].party === 'monsters')
+                li.innerHTML += '<colorMonsters><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></colorMonsters>';
+            else
+                li.innerHTML += '<colorHeroes><label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label></colorHeroes>';
             objetivo.appendChild(li);
         }
     }
@@ -123,7 +125,7 @@ battle.on('info', function (data) {
         infoPanel.innerHTML += ' le ha dado una colleja a <strong>' + data.targetId + '</strong> ';
         if (data.success) {
             var effectsTxt = prettifyEffect(data.effect || {});
-            infoPanel.innerHTML += ' y causó ' + effectsTxt;
+            infoPanel.innerHTML += ' y causó ' + effectsTxt + '.';
         }
         else {
             infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente y <strong>' + data.targetId + '</strong> se rió de él!';
@@ -133,7 +135,7 @@ battle.on('info', function (data) {
         infoPanel.innerHTML += ' se sacó la varita, usó <i>' + data.scrollName + '</i>';
         if (data.success) {
             var effectsTxt = prettifyEffect(data.effect || {});
-            infoPanel.innerHTML += ' y causó ' + effectsTxt;
+            infoPanel.innerHTML += ' y causó ' + effectsTxt + ' a <strong>' + data.targetId + '</strong>.';
         }
         else {
             infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente y <strong>' + data.targetId + '</strong> se rió de él!';
@@ -143,7 +145,7 @@ battle.on('info', function (data) {
     {
         infoPanel.innerHTML += ' se defendió';
         if (data.success) {
-            infoPanel.innerHTML += '. ¡Su defensa aumenta!';
+            infoPanel.innerHTML += '. ¡Su defensa aumenta a ' + data.newDefense + '!';
         }
         else {
             infoPanel.innerHTML += ' pero... ¡Fracasó estrepitósamente!';

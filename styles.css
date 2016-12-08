@@ -97,3 +97,11 @@ button, input, select {
     box-sizing: border-box;
     padding: 1em;
 }
+
+colorHeroes {
+    color: rgb(0, 136, 81);
+}
+
+colorMonsters {
+    color: rgb(223, 0, 122);
+}
