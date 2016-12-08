@@ -136,7 +136,7 @@ battle.on('turn', function (data) {
         li.innerHTML += '<label><input type="radio" name="option" value="' + i +  '" required> ' + i + '</label>';
         objetivoHechizo.appendChild(li);
     }
-    if (objetivoHechizo.innerHTML === "") spellForm.querySelector('[type=submit]').disabled = true;
+    if (this._activeCharacter._mp <= 0 || objetivoHechizo.innerHTML === "") spellForm.querySelector('[type=submit]').disabled = true;
     else spellForm.querySelector('[type=submit]').disabled = false;
 
 
