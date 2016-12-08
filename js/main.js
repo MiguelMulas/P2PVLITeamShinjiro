@@ -45,6 +45,7 @@ var show = function mostrarPers (interfazHTML,nombrePers,lista)
         {
             var li = document.createElement('li');
             personaje = lista[character];
+            if (personaje.hp <= 0) li.classList.add('dead');
             li.innerHTML += personaje.name + " (HP:" + '<strong>' +  personaje.hp + '</strong>' + "/" + 
             personaje.maxHp + ", MP: " + '<strong>' + personaje.mp + '</strong>'+ "/" + personaje.maxMp + ")";
             li.dataset.charaId = nombrePers[i]; 
@@ -106,6 +107,8 @@ battle.on('turn', function (data) {
     }
     if (objetivoHechizo.innerHTML === "") spellForm.querySelector('[type=submit]').disabled = true;
     else spellForm.querySelector('[type=submit]').disabled = false;
+
+
 });
 
 battle.on('info', function (data) {
@@ -147,6 +150,18 @@ battle.on('info', function (data) {
 
 battle.on('end', function (data) {
     console.log('END', data);
+
+    var Hlista = this.characters.allFrom("heroes");
+    var nomHeroes = Object.keys(Hlista);
+    var HeroesTML = document.getElementById('heroes');
+    var Mlista = this.characters.allFrom("monsters");
+    var nomMonstruos = Object.keys(Mlista);
+    var HTMonstersL  = document.getElementById('monsters');
+
+    show(HeroesTML,nomHeroes,Hlista);
+    show(HTMonstersL,nomMonstruos,Mlista);
+
+    infoPanel.innerHTML = 'La sangrienta y larga batalla por fin ha terminado los <strong>' + data.winner + '</strong> se van a tomar magdalenas para celebrar la victoria';
 
     // TODO: re-render the parties so the death of the last character gets reflected
     // TODO: display 'end of battle' message, showing who won
